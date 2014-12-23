@@ -29,31 +29,6 @@ interface Monoid<T> {
 }
 
 @TypeChecked
-class OptionalMonoid<T> implements Monoid<Optional<T>> {
-    Monoid<T> elemMonoidDict
-    OptionalMonoid(Monoid<T> monoidDict=null) {
-        this.elemMonoidDict = monoidDict
-    }
-    @Override
-    public Optional<T> mappend(Optional<T> i1, Optional<T> i2) {
-        if (i1.isPresent() && !i2.isPresent()) {
-            return i1
-        }
-        else if (!i1.isPresent() && i2.isPresent()) {
-            return i2
-        }
-        else if (!i1.isPresent() && !i2.isPresent()) {
-            return Optional.empty()
-        }
-        return Optional.of(elemMonoidDict.mappend(i1.get(), i2.get()))
-    }
-    @Override
-    public Optional<T> mempty() {
-        Optional.empty()
-    }
-}
-
-@TypeChecked
 interface Functor<F> {
     public <T,R> F<R> fmap(Function<T,R> func, F<T> t) // fmap :: (a -> b) -> f a -> f b 
 }
@@ -102,6 +77,33 @@ trait Ord<T> extends Eq<T> {
 }
 
 //------ instance ----------
+
+@TypeChecked
+class OptionalMonoid<T> implements Monoid<Optional<T>> {
+    Monoid<T> elemMonoidDict
+    OptionalMonoid(Monoid<T> monoidDict=null) {
+        this.elemMonoidDict = monoidDict
+    }
+    @Override
+    public Optional<T> mappend(Optional<T> i1, Optional<T> i2) {
+        if (i1.isPresent() && !i2.isPresent()) {
+            return i1
+        }
+        else if (!i1.isPresent() && i2.isPresent()) {
+            return i2
+        }
+        else if (!i1.isPresent() && !i2.isPresent()) {
+            return Optional.empty()
+        }
+        return Optional.of(elemMonoidDict.mappend(i1.get(), i2.get()))
+    }
+    @Override
+    public Optional<T> mempty() {
+        Optional.empty()
+    }
+}
+
+
 @TypeChecked
 class ListFunctor implements Functor<List> {
     @Override
@@ -124,7 +126,6 @@ class OptionalFunctor implements Functor<Optional> {
     }
 }
 
-// type instance
 @TypeChecked
 class ListApplicative extends ListFunctor implements Applicative<List> {
     @Override
