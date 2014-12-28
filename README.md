@@ -111,8 +111,10 @@ Use 'def T' instead of just 'T' because of syntax restriction.
 You can see this is a normal Interface. You can inherit from this to define another type class.
 Probably you might be confused because we use class inheritance here. It doesn't be avoiding class inheritance.
 
-We only use class here for just a place to put method. And ever use instance variable. If we define full AST transformation for this, methods can be static and search method along with inheritance relation in original way.
-To sum up, to use inheritance and instance method is a kind of quick hack. In Haskell they are using static function, and in scala, they are using method of singleton (object).
+We only use class here for just a place to put method. And never use instance variable. If we define full AST transformation for this, methods can be static and search method along with inheritance relation in original way.
+Using inheritance and instance method here is only for convenience. Exactly what we do here is only define a set of operations.
+Reference instance through 'this' is needles.
+In Haskell they are using static functions, and in Scala they are using method of singleton (object). So each of them `this` reference is meaningless.
 
 To sum up,
 
