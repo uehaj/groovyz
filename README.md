@@ -113,7 +113,7 @@ Probably you might be confused because we use class inheritance here. It doesn't
 
 But in here, we only use class for just a place to put method and never use/define instance variable. If we define full AST transformation for type class, methods can be static and search method along with inheritance relation in some way (@InheritConstructor AST Transformation already do it).
 Using inheritance and instance method here is only for convenience. Exactly what we do here is only define a set of operations on generics type T. Reference to instance through 'this' is needles here.
-In Haskell they are using static functions, and in Scala they are using method of singleton (object). So each of them `this` reference is meaningless.
+In Haskell they are implemented as as kind of static functions, and in Scala they are using method of singleton (object). So each of them `this` reference is meaningless.
 
 To sum up,
 
