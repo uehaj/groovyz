@@ -44,7 +44,7 @@ Sample Type Class Instances
 Why I write this?
 ==================
 
-Type class is a language construct which available languages Haskell, Scala and Rust and so on.
+Type class is a language construct which is available in languages Haskell, Scala and Rust and so on.
 As my personal impression, it was difficult to understand.
 So I'd like to explain through implementing it on super self-customizable language, Groovy.
 
@@ -61,7 +61,7 @@ From another point of view, type class provides a way to restrict and guarantee 
 For example, following code using method generics in Groovy,
 
 ```
-static&lt;T> void runSomething(T a) {
+static<T> void runSomething(T a) {
    a.run()
 }
 ```
@@ -69,7 +69,7 @@ static&lt;T> void runSomething(T a) {
 When we want to restrict the type parameter T, we can specify implement Runnable
 
 ```
-static&lt;T implements Runnable> void runSomething(T a) {
+static<T implements Runnable> void runSomething(T a) {
    a.run()
 }
 ```
@@ -77,8 +77,8 @@ static&lt;T implements Runnable> void runSomething(T a) {
 By using class inheritance, we can restrict and guarantee that method can be called to parameter T a.
 This is not bad, but the motivation of introduce type class is avoiding class inheritance.
 
-Why avoiding class inheritance for generics parameter?
-==============================================================
+Why we want to avoid class inheritance for restriction on generics parameter?
+===================================================================================
 
 [TBD]
 
@@ -100,7 +100,7 @@ Define Monoid&lt;T> type class as an interface.
 
 ```
 @TypeChecked
-interface Monoid&lt;T> {
+interface Monoid<T> {
     def T mappend(T t1, T t2);
     def T mempty();
 }
@@ -128,7 +128,7 @@ Instantiation of type class is, to declare a type that it satisfies a type class
 Following code declares instantiate String as a Monoid type class.
 
 ```
-def instance_Monoid_java$lang$String_ = new Monoid&lt;String>() {
+def instance_Monoid_java$lang$String_ = new Monoid<String>() {
     @Override String mappend(String i1, String i2) {
         i1+i2
     }
@@ -149,8 +149,8 @@ Now, let's define generic function which takes a generic parameter on which the 
 ```
 @TypeChecked
 class Functions {
-    static &lt;T> T mappend(T t1, T t2, Monoid&lt;T> dict=Parameter.IMPLICIT) { dict.mappend(t1,t2) }
-    static &lt;T> T mempty(Monoid&lt;T> dict=Parameter.IMPLICIT) { dict.mempty() }
+    static <T> T mappend(T t1, T t2, Monoid<T> dict=Parameter.IMPLICIT) { dict.mappend(t1,t2) }
+    static <T> T mempty(Monoid<T> dict=Parameter.IMPLICIT) { dict.mempty() }
 }
 ```
 
@@ -200,7 +200,7 @@ Arguments for parameter Monoid type instance is need not to appeal but it is cho
 For example, when calling 'mappend("a", "b")', correspond static method definition which have the name "mappend" is:
 
 ```
-    static &lt;T> T mappend(T t1, T t2, Monoid&lt;T> dict=Parameter.IMPLICIT) { dict.mappend(t1,t2) }
+    static <T> T mappend(T t1, T t2, Monoid<T> dict=Parameter.IMPLICIT) { dict.mappend(t1,t2) }
 ```
 
 So infer the generics type T(for return type and parameter type of t1,t2) is String, and Monoid&lt;T> realize it to be Monoid&lt;String>, so encode to variable name `instand_Monoid_java$lang$String`. This call is finally converted to:
@@ -229,9 +229,9 @@ We actually use this feature in this type class sample library like following:
 
 ```
 @TypeChecked
-interface Applicative&lt;A> extends Functor&lt;A> {
-    public &lt;T> A&lt;T> pure(T t)
-    public &lt;T,R> A&lt;R> ap(A&lt;Function&lt;T,R>> func, A&lt;T> a) // &lt;*> :: f (a -> b) -> f a -> f b 
+interface Applicative<A> extends Functor<A> {
+    public <T> A<T> pure(T t)
+    public <T,R> A<R> ap(A<Function<T,R>> func, A<T> a) // <*> :: f (a -> b) -> f a -> f b 
 }
 ```
 
