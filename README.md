@@ -53,7 +53,7 @@ Note: This code implement only the core concept of Type class, and details shoul
 What is Type Class?
 =====================
 
-Type class enables us to restrict Genrics(polimorphic) type parameters to what operations can be done on it.
+Type class enables us to restrict Genrics(polymorphic) type parameters to what operations can be done on it.
 It also give the guarantee what operation can be done when using the type parameters in function which takes the type parameter as a type of it's parameter.
 
 From another point of view, type class provides a way to restrict and guarantee type parameter **without using class inheritance**.
@@ -249,6 +249,6 @@ Summary
 ===============
 
 Groovy's custum type checker is very powerful technology not only for type checkeing but also implemnet a kind of language fueture like Type Class.
-But it moght be abuse of for 'type checker'. I hope general feture similer to custom type checker but can be specify compile phase and more AST node match events.
+But it might be abuse of for 'type checker'. I hope a new feture to groovy, whih is general feture similer to custom type checker but can be specify compile phase and more AST node match events.
 
 Enjoy!
