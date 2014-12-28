@@ -253,7 +253,7 @@ Summary
 ===============
 
 Groovy's custom type checker is very powerful technology not only for type checking but also implement a kind of language feature like Type Class.
-But it might be abuse of for 'type checker'. I hope extended custom type checker or new feature which can be use easily like custom type checker also that are various compile phase can be specified and can handle more AST node match events.
+But it might be abuse of for 'type checker'. I hope extended custom type checker or new feature which can be use easily like custom type checker, which can be specified various compile phase and can handle more AST node match events.
 
 Enjoy!
 
