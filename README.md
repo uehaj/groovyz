@@ -18,27 +18,27 @@ Providing type class library
 Type classes
 -------------------------
 
-* interface Monoid<T> {
-* interface Functor<F> {
-* interface Applicative<A> extends Functor<A> {
-* interface Monad<M> extends Applicative<M> {
-* interface Show<T> {
-* trait Eq<T> { // One of eq or neq, or both should be overridden.
-* trait Ord<T> extends Eq<T> {
+* interface Monoid&lt;T> {
+* interface Functor&lt;F> {
+* interface Applicative&lt;A> extends Functor&lt;A> {
+* interface Monad&lt;M> extends Applicative&lt;M> {
+* interface Show&lt;T> {
+* trait Eq&lt;T> { // One of eq or neq, or both should be overridden.
+* trait Ord&lt;T> extends Eq&lt;T> {
 
 Sample Type Class Instances
 -----------------------------------
 
-* class OptionalMonoid<T> implements Monoid<Optional<T>> {
-* class ListFunctor implements Functor<List> {
-* class OptionalFunctor implements Functor<Optional> {
-* class ListApplicative extends ListFunctor implements Applicative<List> {
-* class ListMonad extends ListApplicative implements Monad<List> {
-* class IntShow implements Show<Integer> {
-* class StringShow implements Show<String> {
-* class ListShow<T> implements Show<List<T>> {
-* class IntEq implements Eq<Integer> {
-* class IntOrd implements Ord<Integer> {
+* class OptionalMonoid&lt;T> implements Monoid&lt;Optional&lt;T>> {
+* class ListFunctor implements Functor&lt;List> {
+* class OptionalFunctor implements Functor&lt;Optional> {
+* class ListApplicative extends ListFunctor implements Applicative&lt;List> {
+* class ListMonad extends ListApplicative implements Monad&lt;List> {
+* class IntShow implements Show&lt;Integer> {
+* class StringShow implements Show&lt;String> {
+* class ListShow&lt;T> implements Show&lt;List&lt;T>> {
+* class IntEq implements Eq&lt;Integer> {
+* class IntOrd implements Ord&lt;Integer> {
 
 
 Why I write this?
@@ -61,7 +61,7 @@ From another point of view, type class provides a way to restrict and guarantee 
 For example, following code using method generics in Groovy,
 
 ```
-static<T> void runSomething(T a) {
+static&lt;T> void runSomething(T a) {
    a.run()
 }
 ```
@@ -69,7 +69,7 @@ static<T> void runSomething(T a) {
 When we want to restrict the type parameter T, we can specify implement Runnable
 
 ```
-static<T implements Runnable> void runSomething(T a) {
+static&lt;T implements Runnable> void runSomething(T a) {
    a.run()
 }
 ```
@@ -96,11 +96,11 @@ We'd like to explain mechanism of our Groovy type class with following 4 steps:
 (1) Define a type class
 -----------------------------
 
-Define Monoid<T> type class as an interface.
+Define Monoid&lt;T> type class as an interface.
 
 ```
 @TypeChecked
-interface Monoid<T> {
+interface Monoid&lt;T> {
     def T mappend(T t1, T t2);
     def T mempty();
 }
@@ -128,7 +128,7 @@ Instantiation of type class is, to declare a type that it satisfies a type class
 Following code declares instantiate String as a Monoid type class.
 
 ```
-def instance_Monoid_java$lang$String_ = new Monoid<String>() {
+def instance_Monoid_java$lang$String_ = new Monoid&lt;String>() {
     @Override String mappend(String i1, String i2) {
         i1+i2
     }
@@ -149,8 +149,8 @@ Now, let's define generic function which takes a generic parameter on which the 
 ```
 @TypeChecked
 class Functions {
-    static <T> T mappend(T t1, T t2, Monoid<T> dict=Parameter.IMPLICIT) { dict.mappend(t1,t2) }
-    static <T> T mempty(Monoid<T> dict=Parameter.IMPLICIT) { dict.mempty() }
+    static &lt;T> T mappend(T t1, T t2, Monoid&lt;T> dict=Parameter.IMPLICIT) { dict.mappend(t1,t2) }
+    static &lt;T> T mempty(Monoid&lt;T> dict=Parameter.IMPLICIT) { dict.mempty() }
 }
 ```
 
@@ -200,10 +200,10 @@ Arguments for parameter Monoid type instance is need not to appeal but it is cho
 For example, when calling 'mappend("a", "b")', correspond static method definition which have the name "mappend" is:
 
 ```
-    static <T> T mappend(T t1, T t2, Monoid<T> dict=Parameter.IMPLICIT) { dict.mappend(t1,t2) }
+    static &lt;T> T mappend(T t1, T t2, Monoid&lt;T> dict=Parameter.IMPLICIT) { dict.mappend(t1,t2) }
 ```
 
-So infer the generics type T(for return type and parameter type of t1,t2) is String, and Monoid<T> realize it to be Monoid<String>, so encode to variable name `instand_Monoid_java$lang$String`. This call is finally converted to:
+So infer the generics type T(for return type and parameter type of t1,t2) is String, and Monoid&lt;T> realize it to be Monoid&lt;String>, so encode to variable name `instand_Monoid_java$lang$String`. This call is finally converted to:
 
 ```
 mappend("a","b",instance_Monoid_java$lang$String_ )
@@ -223,15 +223,15 @@ Type constructor as type parameter(Higher-kind Generics)
 
 Groovy generics is a different from Java. In Java generics, generics type parameter type can't be a type parameter which takes type parameter.
 In the other words, type constructor can't be pass as type parameter. But Groovy can do it.
-For example, 'List' of List<T> or 'Optional' of Optional<T> can't be pass as generics parameter in Java but Groovy can.
+For example, 'List' of List&lt;T> or 'Optional' of Optional&lt;T> can't be pass as generics parameter in Java but Groovy can.
 
 We actually use this feature in this type class sample library like following:
 
 ```
 @TypeChecked
-interface Applicative<A> extends Functor<A> {
-    public <T> A<T> pure(T t)
-    public <T,R> A<R> ap(A<Function<T,R>> func, A<T> a) // <*> :: f (a -> b) -> f a -> f b 
+interface Applicative&lt;A> extends Functor&lt;A> {
+    public &lt;T> A&lt;T> pure(T t)
+    public &lt;T,R> A&lt;R> ap(A&lt;Function&lt;T,R>> func, A&lt;T> a) // &lt;*> :: f (a -> b) -> f a -> f b 
 }
 ```
 
